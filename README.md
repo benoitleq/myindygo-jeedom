@@ -6,6 +6,9 @@ Affichage en temps réel de la température et contrôle de la filtration et des
 
 ![architecture](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![streamlit](https://img.shields.io/badge/Streamlit-1.30+-red.svg)
+![licence](https://img.shields.io/badge/Licence-MIT-green.svg)
+
+> Discussion & support : [Communauté Jeedom](https://community.jeedom.com) — rubrique *Présentation Plugin*
 
 ## ✨ Fonctionnalités
 
