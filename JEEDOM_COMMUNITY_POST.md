@@ -1,10 +1,10 @@
 # Post à publier sur community.jeedom.com
 
-**Catégorie recommandée :** Présentation Plugin  
-**Tags suggérés :** piscine, indygo, pool-command, python, streamlit  
+**Catégorie :** Présentation Plugin  
+**Tags :** piscine, indygo, pool-command, lora, plugin-gratuit  
 **Titre du post :**
 
-> [Outil gratuit] MyIndygo — Pilotez votre piscine Indygo Pool Command depuis un navigateur
+> [Plugin gratuit] MyIndygo — Pilotez votre piscine Indygo Pool Command dans Jeedom
 
 ---
 
@@ -14,71 +14,91 @@
 
 Bonjour à tous,
 
-Je partage un petit outil open-source que j'ai développé pour piloter ma piscine connectée **Indygo Pool Command** depuis un navigateur, en attendant un vrai plugin Jeedom.
+Je partage un plugin Jeedom open-source gratuit pour piloter votre piscine connectée **Indygo Pool Command** directement depuis Jeedom.
 
 ---
 
-### 🏊 MyIndygo — Interface web locale pour Indygo Pool Command
+### 🏊 Plugin MyIndygo pour Jeedom
 
-**GitHub :** https://github.com/benoitleq/myindygo-jeedom
-
----
-
-#### Ce que ça fait
-
-- 🌡️ **Température de l'eau** affichée en temps réel
-- 💧 **Filtration** : Off / On / Auto avec retour visuel de l'état courant
-- 💡 **Équipements auxiliaires** détectés automatiquement (éclairage, PAC, robot…)
-- 🔄 Auto-rafraîchissement configurable (30 s à 5 min)
-- 📡 Utilise l'**API officielle OAuth2** de myindygo.com (pas de scraping, robuste)
-- 🔒 Vos identifiants restent **en local** — aucun tiers impliqué
+**GitHub :** https://github.com/benoitleq/myindygojeedom  
+**Licence :** MIT — gratuit, pour toujours
 
 ---
 
-#### Installation en 4 commandes
+### Ce que ça fait
 
-```bash
-git clone https://github.com/benoitleq/myindygo-jeedom.git
-cd myindygo
-pip install -r requirements.txt
-cp config.example.py config.py   # puis éditez config.py avec vos identifiants
-streamlit run streamlit_app.py
-```
-
-L'interface s'ouvre sur http://localhost:8501.
-
----
-
-#### Configuration minimale (`config.py`)
-
-```python
-EMAIL    = "votre.email@exemple.com"
-PASSWORD = "votre_mot_de_passe"
-POOL_ID  = "..."   # visible dans l'URL après login sur myindygo.com
-```
+- 🌡️ **Température de l'eau** — commande info numérique, historisée
+- 💧 **Filtration active** — commande info binaire, historisée
+- 🎛️ **Mode courant** de chaque programme (Filtration, Éclairage, PAC…) — Off / On / Auto
+- ▶️ **Commandes action** Off / On / Auto pour chaque programme détecté
+- 🔍 **Auto-détection** des équipements au premier lancement
+- 🔄 **Rafraîchissement automatique** toutes les 5 min (cron Jeedom natif)
+- 📡 API **OAuth2 officielle** myindygo.com — pas de scraping, robuste aux mises à jour
+- 🔒 Identifiants stockés **localement** dans Jeedom — aucun tiers impliqué
 
 ---
 
-#### Compatibilité
+### Installation
 
-Testé avec un **Pool Command** (module LoRaWAN V2). Devrait fonctionner avec tout équipement géré par myindygo.com. Retour de 10–30 s normal (latence LoRa).
+**Plugins > Gestion des plugins > + > GitHub**
+
+| Champ | Valeur |
+|---|---|
+| Utilisateur | `benoitleq` |
+| Dépôt | `myindygojeedom` |
+| Branche | `main` |
+
+Puis :
+
+1. Installer et activer le plugin
+2. **Plugins > Confort > MyIndygo** → **Ajouter une piscine**
+3. Saisir l'**email**, le **mot de passe** et le **Pool ID**
+4. Sauvegarder → les commandes sont créées automatiquement
+
+> 💡 **Trouver le Pool ID** : connectez-vous sur [myindygo.com](https://myindygo.com), l'URL contient `pools/<POOL_ID>`.
 
 ---
 
-#### Pourquoi pas un vrai plugin Jeedom ?
+### Commandes créées automatiquement
 
-C'est l'étape suivante si la communauté est intéressée ! En attendant, cet outil tourne en parallèle de Jeedom sur n'importe quelle machine (Raspberry Pi, NAS, PC).
+| Commande | Type | Détail |
+|---|---|---|
+| Température eau | info numérique | °C, historisée |
+| Filtration active | info binaire | 1/0, historisée |
+| `<Programme>` — mode | info texte | Off / On / Auto |
+| `<Programme>` → Off | action | Forcer l'arrêt |
+| `<Programme>` → On | action | Forcer la marche |
+| `<Programme>` → Auto | action | Repasser en programmation |
+
+Les programmes (filtration + auxiliaires) sont détectés automatiquement.
 
 ---
 
-#### Crédits
+### Compatibilité
+
+Testé avec **Pool Command** (module LoRaWAN V2, type `lr-pc`).  
+Compatible aussi avec les modules **IPX**.  
+La latence de **10 à 30 secondes** entre la commande et le retour visuel est normale (propagation LoRa).
+
+---
+
+### En bonus : interface web standalone
+
+Si vous souhaitez piloter votre piscine sans Jeedom (Raspberry Pi, NAS…), une interface **Python/Streamlit** est aussi disponible :
+
+**https://github.com/benoitleq/myindygo-jeedom**
+
+---
+
+### Crédits
 
 - API reverse-engineerée par [FunFR](https://github.com/FunFR) via [ha-indygo-pool](https://github.com/FunFR/ha-indygo-pool) (Apache 2.0)
 - Inspiré du travail de B_Leq sur le forum HACF
 
 ---
 
-N'hésitez pas à ouvrir une issue sur GitHub ou à répondre ici si vous avez un Pool Command et que vous voulez tester. Vos retours m'aideront à améliorer le projet et éventuellement en faire un plugin Jeedom complet.
+Vos retours sont les bienvenus ici ou en ouvrant une issue sur GitHub.  
+Si vous avez un Pool Command et que vous testez, dites-moi comment ça se passe !
 
 Bonne baignade ! 🌊
 
@@ -86,9 +106,10 @@ Bonne baignade ! 🌊
 
 ## Checklist avant de poster
 
-- [ ] Remplacer `benoitleq` par votre vrai pseudo GitHub dans les deux URLs
-- [ ] Avoir créé le dépôt GitHub public (voir instructions dans le README)
+- [x] Dépôt GitHub public créé : https://github.com/benoitleq/myindygojeedom
+- [ ] Ajouter l'icône `myindygojeedom_icon.png` (128×128 px) dans `desktop/img/` et pousser sur GitHub
+- [ ] Tester l'installation sur votre Jeedom (logs : Analyse > Logs > myindygojeedom)
 - [ ] Être connecté sur community.jeedom.com
-- [ ] Aller dans : **Présentation Plugin** > bouton **+ Nouveau sujet**
-- [ ] Coller le texte ci-dessus (sans la partie "Texte du post")
-- [ ] Ajouter les tags : `piscine`, `indygo`, `pool-command`, `python`
+- [ ] Aller dans : **Présentation Plugin** > **+ Nouveau sujet**
+- [ ] Coller le texte ci-dessus (à partir de "Bonjour à tous")
+- [ ] Ajouter les tags : `piscine`, `indygo`, `pool-command`, `lora`, `plugin-gratuit`
