@@ -1,4 +1,4 @@
-# MyIndygo — Interface Streamlit
+# MyIndygo Jeedom — Interface Streamlit
 
 Application web locale pour piloter votre piscine connectée Indygo (Pool Command).
 Affichage en temps réel de la température et contrôle de la filtration et des
